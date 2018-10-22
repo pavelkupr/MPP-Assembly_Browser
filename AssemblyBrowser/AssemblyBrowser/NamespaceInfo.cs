@@ -10,7 +10,7 @@ namespace AssemblyBrowser
 {
 	public class NamespaceInfo : TypesContainer, INotifyPropertyChanged
 	{
-		public string Name { get; }
+		public override string Name { get; }
 		private readonly List<TypeInfo> typesInfo;
 		public override IEnumerable<TypeInfo> TypesInfo { get { return typesInfo; } }
 

@@ -29,6 +29,7 @@ namespace MVVM
 					  AssemblyInfo = generator.GenerateAssemblyInfo(currPath);
 					  stack = new Stack<TypesContainer>();
 					  stack.Push(AssemblyInfo);
+					  OnPropertyChanged("CurrAssemblyPath");
 				  }));
 			}
 		}
@@ -45,6 +46,7 @@ namespace MVVM
 						  stack.Push(SelectedContainer);
 						  SelectedType = null;
 						  currContainer = null;
+						  OnPropertyChanged("CurrAssemblyPath");
 					  }
 				  }));
 			}
@@ -62,6 +64,7 @@ namespace MVVM
 						  SelectedContainer = stack.Peek();
 						  SelectedType = null;
 						  currContainer = null;
+						  OnPropertyChanged("CurrAssemblyPath");
 					  }
 				  }));
 			}
@@ -86,7 +89,27 @@ namespace MVVM
 				OnPropertyChanged("CurrPath");
 			}
 		}
-
+		public string CurrAssemblyPath
+		{
+			get
+			{
+				string result="";
+				if (AssemblyInfo != null)
+				{
+					TypesContainer[] containers = stack.ToArray();
+					for (int i = 1; i < containers.Length; i++)
+					{
+						if (i != 1)
+							result += "." + containers[i].Name;
+						else
+							result += containers[i].Name;
+					}
+					if (selectedType != null)
+						result += "." + selectedType.Name;
+				}
+				return result;
+			}
+		}
 		public TypeInfo SelectedType
 		{
 			get { return selectedType; }
@@ -94,7 +117,7 @@ namespace MVVM
 			{
 				selectedType = value;
 				OnPropertyChanged("SelectedType");
-				
+				OnPropertyChanged("CurrAssemblyPath");
 			}
 		}
 

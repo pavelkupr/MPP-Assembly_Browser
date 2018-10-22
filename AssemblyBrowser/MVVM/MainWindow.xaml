@@ -42,8 +42,8 @@
                 </ListBox.ItemTemplate>
             </ListBox>
         </StackPanel>
-        <StackPanel Grid.Column="3" Grid.Row="1" Grid.RowSpan="2">
-            <TextBlock FontSize="18" Text="{Binding Path=SelectedType.Name}" />
+        <TextBox Grid.Column="3" Grid.Row="1" IsReadOnly="True" Text="{Binding Path=CurrAssemblyPath,Mode=OneWay}" />
+        <StackPanel Grid.Column="3" Grid.Row="2">
             <TextBlock FontSize="15" Text="Methods" />
             <ListBox ItemsSource="{Binding Path=SelectedType.Methods}" BorderBrush="{x:Null}">
                 <ListBox.ItemTemplate>

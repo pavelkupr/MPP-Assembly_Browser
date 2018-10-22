@@ -8,6 +8,8 @@ namespace AssemblyBrowser
 {
 	public abstract class TypesContainer
 	{
+		abstract public string Name { get; }
+
 		abstract public IEnumerable<TypeInfo> TypesInfo { get; }
 
 		abstract public IEnumerable<NamespaceInfo> Namespaces { get; }
