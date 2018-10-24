@@ -17,16 +17,16 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <StackPanel Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0">
-            <TextBox Text="{Binding Path=CurrPath}" />
+        <StackPanel Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Margin="0">
+            <TextBox Text="{Binding Path=CurrPath}" Margin="0" />
             <Button Command="{Binding UpdateCommand}" Content="Update"/>
-            <TextBlock FontSize="18" Text="{Binding Path=AssemblyInfo.Name}" />
+            <TextBlock FontSize="10" Text="{Binding ErrorMsg}" />
         </StackPanel>
         <Button Grid.Column="0" Grid.Row="1" Command="{Binding BackCommand}" Content="Back"/>
         <Button Grid.Column="1" Grid.Row="1" Command="{Binding NextCommand}" Content="Next"/>
-        <StackPanel Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" >
+        <StackPanel Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" Margin="10,10,0,0" >
             <TextBlock FontSize="18" Text="Namespaces" />
-            <ListBox ItemsSource="{Binding Path=SelectedContainer.Namespaces}" SelectedItem="{Binding Path=CurrContainer}" BorderBrush="{x:Null}">
+            <ListBox ItemsSource="{Binding Path=SelectedContainer.Namespaces}" SelectedItem="{Binding Path=CurrContainer}" BorderBrush="{x:Null}" Margin="10,0,0,0">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock FontSize="14" Text="{Binding Name}" />
@@ -34,7 +34,7 @@
                 </ListBox.ItemTemplate>
             </ListBox>
             <TextBlock FontSize="18" Text="Types" />
-            <ListBox ItemsSource="{Binding Path=SelectedContainer.TypesInfo}" SelectedItem="{Binding Path=SelectedType}" BorderBrush="{x:Null}">
+            <ListBox ItemsSource="{Binding Path=SelectedContainer.TypesInfo}" SelectedItem="{Binding Path=SelectedType}" BorderBrush="{x:Null}" Margin="10,0,0,0">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock FontSize="14" Text="{Binding Name}" />
@@ -43,9 +43,9 @@
             </ListBox>
         </StackPanel>
         <TextBox Grid.Column="3" Grid.Row="1" IsReadOnly="True" Text="{Binding Path=CurrAssemblyPath,Mode=OneWay}" />
-        <StackPanel Grid.Column="3" Grid.Row="2">
+        <StackPanel Grid.Column="3" Grid.Row="2" Margin="20,10,0,0">
             <TextBlock FontSize="15" Text="Methods" />
-            <ListBox ItemsSource="{Binding Path=SelectedType.Methods}" BorderBrush="{x:Null}">
+            <ListBox ItemsSource="{Binding Path=SelectedType.Methods}" BorderBrush="{x:Null}" Margin="10,0,0,0">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock FontSize="12" Text="{Binding}"/>
@@ -53,7 +53,7 @@
                 </ListBox.ItemTemplate>
             </ListBox>
             <TextBlock FontSize="15" Text="Fields" />
-            <ListBox ItemsSource="{Binding Path=SelectedType.Fields}" BorderBrush="{x:Null}">
+            <ListBox ItemsSource="{Binding Path=SelectedType.Fields}" BorderBrush="{x:Null}" Margin="10,0,0,0">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock FontSize="12" Text="{Binding}"/>
@@ -61,7 +61,7 @@
                 </ListBox.ItemTemplate>
             </ListBox>
             <TextBlock FontSize="15" Text="Properties" />
-            <ListBox ItemsSource="{Binding Path=SelectedType.Properties}" BorderBrush="{x:Null}">
+            <ListBox ItemsSource="{Binding Path=SelectedType.Properties}" BorderBrush="{x:Null}" Margin="10,0,0,0">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock FontSize="12" Text="{Binding}"/>

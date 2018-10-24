@@ -11,7 +11,7 @@ namespace MVVM
 {
 	class ViewModel : INotifyPropertyChanged
 	{
-		private string currPath;
+		private string currPath, errorMsg;
 		private AssemblyInfoGenerator generator;
 		private AssemblyInfo info;
 		private TypeInfo selectedType;
@@ -26,10 +26,19 @@ namespace MVVM
 				return updateCommand ??
 				  (updateCommand = new Command(obj =>
 				  {
-					  AssemblyInfo = generator.GenerateAssemblyInfo(currPath);
-					  stack = new Stack<TypesContainer>();
-					  stack.Push(AssemblyInfo);
-					  OnPropertyChanged("CurrAssemblyPath");
+					  try
+					  {
+						  AssemblyInfo curr = generator.GenerateAssemblyInfo(currPath);
+						  AssemblyInfo = curr;
+						  stack = new Stack<TypesContainer>();
+						  stack.Push(AssemblyInfo);
+						  OnPropertyChanged("CurrAssemblyPath");
+						  ErrorMsg = "";
+					  }
+					  catch
+					  {
+						  ErrorMsg = "Невозможно загрузить сборку";
+					  }
 				  }));
 			}
 		}
@@ -89,6 +98,15 @@ namespace MVVM
 				OnPropertyChanged("CurrPath");
 			}
 		}
+		public string ErrorMsg
+		{
+			get { return errorMsg; }
+			set
+			{
+				errorMsg = value;
+				OnPropertyChanged("ErrorMsg");
+			}
+		}
 		public string CurrAssemblyPath
 		{
 			get
@@ -97,12 +115,14 @@ namespace MVVM
 				if (AssemblyInfo != null)
 				{
 					TypesContainer[] containers = stack.ToArray();
-					for (int i = 1; i < containers.Length; i++)
+					for (int i = containers.Length-1; i >= 0; i--)
 					{
-						if (i != 1)
-							result += "." + containers[i].Name;
-						else
+						if (i == containers.Length - 1)
 							result += containers[i].Name;
+						else if (i == containers.Length - 2)
+							result += ": " + containers[i].Name;
+						else
+							result += "." + containers[i].Name;
 					}
 					if (selectedType != null)
 						result += "." + selectedType.Name;
