@@ -26,5 +26,25 @@ namespace MVVM
 
 			DataContext = new ViewModel();
 		}
+
+		private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+		{
+			if(namespase_path.Text == "")
+			{
+				namespaces.Text = "";
+				types.Text = "";
+				methods.Text = "";
+				properties.Text = "";
+				fields.Text = "";
+			}
+			else
+			{
+				namespaces.Text = "Namespaces";
+				types.Text = "Types";
+				methods.Text = "Methods";
+				properties.Text = "Properties";
+				fields.Text = "Fields";
+			}
+		}
 	}
 }
