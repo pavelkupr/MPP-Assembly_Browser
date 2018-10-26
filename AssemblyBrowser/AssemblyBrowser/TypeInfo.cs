@@ -13,7 +13,7 @@ namespace AssemblyBrowser
 	public class TypeInfo : INotifyPropertyChanged
 	{
 		public string Name { get; }
-		private bool mod;
+		private bool mode;
 		private readonly List<string> methods;
 		public IEnumerable<string> Methods { get { return methods; } }
 
@@ -27,7 +27,7 @@ namespace AssemblyBrowser
 		{
 			Name = _name;
 			OnPropertyChanged("Name");
-			mod = isFullTypeName;
+			mode = isFullTypeName;
 			methods = new List<string>();
 			fields = new List<string>();
 			properties = new List<string>();
@@ -70,7 +70,7 @@ namespace AssemblyBrowser
 		private string TypeNameFormat(Type type)
 		{
 			string result;
-			if (!mod)
+			if (!mode)
 			{
 				if (type.IsGenericType)
 				{

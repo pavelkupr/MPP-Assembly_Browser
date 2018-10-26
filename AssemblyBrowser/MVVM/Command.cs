@@ -18,20 +18,20 @@ namespace MVVM
 			remove { CommandManager.RequerySuggested -= value; }
 		}
 
-		public Command(Action<object> execute, Func<object, bool> canExecute = null)
+		public Command(Action<object> _execute, Func<object, bool> _canExecute = null)
 		{
-			this.execute = execute;
-			this.canExecute = canExecute;
+			execute = _execute;
+			canExecute = _canExecute;
 		}
 
 		public bool CanExecute(object parameter)
 		{
-			return this.canExecute == null || this.canExecute(parameter);
+			return canExecute == null || canExecute(parameter);
 		}
 
 		public void Execute(object parameter)
 		{
-			this.execute(parameter);
+			execute(parameter);
 		}
 		
 	}

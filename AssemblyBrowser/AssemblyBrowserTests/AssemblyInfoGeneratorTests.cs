@@ -7,10 +7,12 @@ namespace AssemblyBrowserTests
 	[TestClass]
 	public class AssemblyInfoGeneratorTests
 	{
+		public string testField;
+		public string TestProperty { get; }
+
 		private static AssemblyInfo assemblyInfo;
 		private static NamespaceInfo namespaceInfo;
 		private static TypeInfo typeInfo;
-		public string TEST;
 
 		[ClassInitialize]
 		public static void ClassInitilize(TestContext context)
@@ -77,7 +79,19 @@ namespace AssemblyBrowserTests
 			bool isFinded = false;
 			foreach (string field in typeInfo.Fields)
 			{
-				if (field == "System.String TEST")
+				if (field == "System.String testField")
+					isFinded = true;
+			}
+			Assert.IsTrue(isFinded, "TypeInfo doesn't have right field");
+		}
+
+		[TestMethod]
+		public void TypeInfo_Has_Right_Property()
+		{
+			bool isFinded = false;
+			foreach (string property in typeInfo.Properties)
+			{
+				if (property == "System.String TestProperty")
 					isFinded = true;
 			}
 			Assert.IsTrue(isFinded, "TypeInfo doesn't have right field");
