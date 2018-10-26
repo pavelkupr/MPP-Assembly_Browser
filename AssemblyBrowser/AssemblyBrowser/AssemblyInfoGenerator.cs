@@ -9,6 +9,12 @@ namespace AssemblyBrowser
 {
 	public class AssemblyInfoGenerator
 	{
+		public bool isFullTypeName;
+		public AssemblyInfoGenerator()
+		{
+			isFullTypeName = false;
+		}
+
 		public AssemblyInfo GenerateAssemblyInfo(string path)
 		{
 			Assembly assembly = Assembly.LoadFrom(path);
@@ -39,7 +45,7 @@ namespace AssemblyBrowser
 
 		private TypeInfo GenerateTypeInfo(Type type)
 		{
-			TypeInfo result = new TypeInfo(type.Name);
+			TypeInfo result = new TypeInfo(type.Name, isFullTypeName);
 			foreach(FieldInfo info in type.GetFields())
 			{
 				result.AddField(info);

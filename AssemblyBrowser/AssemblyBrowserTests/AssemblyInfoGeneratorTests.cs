@@ -8,12 +8,32 @@ namespace AssemblyBrowserTests
 	public class AssemblyInfoGeneratorTests
 	{
 		private static AssemblyInfo assemblyInfo;
+		private static NamespaceInfo namespaceInfo;
+		private static TypeInfo typeInfo;
+		public string TEST;
 
 		[ClassInitialize]
 		public static void ClassInitilize(TestContext context)
 		{
 			AssemblyInfoGenerator generator = new AssemblyInfoGenerator();
+			generator.isFullTypeName = true;
 			assemblyInfo = generator.GenerateAssemblyInfo("AssemblyBrowserTests.dll");
+			foreach(NamespaceInfo nInfo in assemblyInfo.Namespaces)
+			{
+				if (nInfo.Name == "AssemblyBrowserTests")
+				{
+					namespaceInfo = nInfo;
+					foreach (TypeInfo tInfo in nInfo.TypesInfo)
+					{
+						if(tInfo.Name == "AssemblyInfoGeneratorTests")
+						{
+							typeInfo = tInfo;
+							break;
+						}
+					}
+					break;
+				}
+			}
 		}
 
 		[TestMethod]
@@ -30,17 +50,37 @@ namespace AssemblyBrowserTests
 		[TestMethod]
 		public void AssemblyInfo_Has_Right_Namespaces()
 		{
-			if( assemblyInfo.Namespaces.ToArray()[0].Name != "AssemblyBrowserTests")
-				Assert.Fail("Name of namespace is incorrect");
+			Assert.IsNotNull(namespaceInfo, "AssemblyInfo doesn't have right NamespaseInfo");
 		}
 
 		[TestMethod]
 		public void Namespace_Has_Right_Type()
 		{
-			NamespaceInfo namespaceInfo = assemblyInfo.Namespaces.ToArray()[0];
+			Assert.IsNotNull(typeInfo, "NamespaseInfo doesn't have right TypeInfo");
+		}
 
-			if (namespaceInfo.TypesInfo.ToArray()[0].Name != "AssemblyInfoGeneratorTests")
-				Assert.Fail("Name of type is incorrect");
+		[TestMethod]
+		public void TypeInfo_Has_Right_Method()
+		{
+			bool isFinded = false;
+			foreach(string method in typeInfo.Methods)
+			{
+				if (method == "System.Void TypeInfo_Has_Right_Method()")
+					isFinded = true;
+			}
+			Assert.IsTrue(isFinded, "TypeInfo doesn't have right method");
+		}
+
+		[TestMethod]
+		public void TypeInfo_Has_Right_Field()
+		{
+			bool isFinded = false;
+			foreach (string field in typeInfo.Fields)
+			{
+				if (field == "System.String TEST")
+					isFinded = true;
+			}
+			Assert.IsTrue(isFinded, "TypeInfo doesn't have right field");
 		}
 	}
 }

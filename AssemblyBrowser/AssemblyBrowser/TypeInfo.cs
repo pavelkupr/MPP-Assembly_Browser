@@ -13,7 +13,7 @@ namespace AssemblyBrowser
 	public class TypeInfo : INotifyPropertyChanged
 	{
 		public string Name { get; }
-
+		private bool mod;
 		private readonly List<string> methods;
 		public IEnumerable<string> Methods { get { return methods; } }
 
@@ -23,11 +23,11 @@ namespace AssemblyBrowser
 		private readonly List<string> properties;
 		public IEnumerable<string> Properties { get { return properties; } }
 
-		internal TypeInfo(string _name)
+		internal TypeInfo(string _name, bool isFullTypeName)
 		{
 			Name = _name;
 			OnPropertyChanged("Name");
-
+			mod = isFullTypeName;
 			methods = new List<string>();
 			fields = new List<string>();
 			properties = new List<string>();
@@ -35,14 +35,16 @@ namespace AssemblyBrowser
 
 		internal void AddMethod(MethodInfo info)
 		{
+			if (info.IsSpecialName == true)
+				return;
 			string result;
-			result = info.ReturnType.ToString()+" "+ info.Name + "(";
+			result = TypeNameFormat(info.ReturnType)+ " "+ info.Name + "(";
 			ParameterInfo[] parameters = info.GetParameters();
 			for (int i = 0;i< parameters.Length;i++)
 			{
 				if (i != 0)
 					result += ", ";
-				result += parameters[i].ParameterType.ToString();
+				result += TypeNameFormat(parameters[i].ParameterType);
 			}
 			result +=")";
 			methods.Add(result);
@@ -52,7 +54,7 @@ namespace AssemblyBrowser
 		internal void AddField(FieldInfo info)
 		{
 			string result;
-			result = info.FieldType.ToString() + " " + info.Name;
+			result = TypeNameFormat(info.FieldType)+ " " + info.Name;
 			fields.Add(result);
 			OnPropertyChanged("Fields");
 		}
@@ -60,11 +62,48 @@ namespace AssemblyBrowser
 		internal void AddProperty(PropertyInfo info)
 		{
 			string result;
-			result = info.PropertyType.ToString() + " " + info.Name;
+			result = TypeNameFormat(info.PropertyType) + " " + info.Name;
 			properties.Add(result);
 			OnPropertyChanged("Properties");
 		}
 
+		private string TypeNameFormat(Type type)
+		{
+			string result;
+			if (!mod)
+			{
+				if (type.IsGenericType)
+				{
+					result = type.GetGenericTypeDefinition().Name;
+					result = result.Remove(result.Length-2,2);
+					result += "<" + type.GetGenericArguments()[0].Name;
+					for (int i = 1; i < type.GetGenericArguments().Length; i++)
+					{
+						result += ", " + type.GetGenericArguments()[i].Name;
+					}
+					result += ">";
+				}
+				else
+					result = type.Name;
+			}
+			else
+			{
+				if (type.IsGenericType)
+				{
+					result = type.GetGenericTypeDefinition().FullName;
+					result = result.Remove(result.Length - 2, 2);
+					result += "<" + type.GetGenericArguments()[0].FullName;
+					for (int i = 1; i < type.GetGenericArguments().Length; i++)
+					{
+						result += ", " + type.GetGenericArguments()[i].FullName;
+					}
+					result += ">";
+				}
+				else
+					result = type.FullName;
+			}
+			return result;
+		}
 		public event PropertyChangedEventHandler PropertyChanged;
 		public void OnPropertyChanged([CallerMemberName]string prop = "")
 		{

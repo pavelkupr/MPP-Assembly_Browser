@@ -18,6 +18,7 @@ namespace MVVM
 		private Command updateCommand, nextCommand, backCommand;
 		private TypesContainer selectedContainer, currContainer;
 		private Stack<TypesContainer> stack;
+		private bool isFullTypeName;
 
 		public Command UpdateCommand
 		{
@@ -28,6 +29,7 @@ namespace MVVM
 				  {
 					  try
 					  {
+						  generator.isFullTypeName = isFullTypeName;
 						  AssemblyInfo curr = generator.GenerateAssemblyInfo(currPath);
 						  AssemblyInfo = curr;
 						  stack = new Stack<TypesContainer>();
@@ -86,6 +88,16 @@ namespace MVVM
 				info = value;
 				SelectedContainer = value;
 				OnPropertyChanged("AssemblyInfo");
+			}
+		}
+
+		public bool IsFullTypeName
+		{
+			get { return isFullTypeName; }
+			set
+			{
+				isFullTypeName = value;
+				OnPropertyChanged("IsFullTypeName");
 			}
 		}
 

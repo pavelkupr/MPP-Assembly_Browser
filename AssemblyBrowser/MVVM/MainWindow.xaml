@@ -20,7 +20,8 @@
         <StackPanel Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Margin="0">
             <TextBox Text="{Binding Path=CurrPath}" Margin="0" />
             <Button Command="{Binding UpdateCommand}" Content="Update"/>
-            <TextBlock FontSize="10" Text="{Binding ErrorMsg}" />
+            <TextBlock Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" FontSize="8" Text="{Binding ErrorMsg}" FontWeight="Bold" />
+            <CheckBox Content="Full Type Names" IsChecked="{Binding IsFullTypeName}" Margin="0,0,0,3"/>
         </StackPanel>
         <Button Grid.Column="0" Grid.Row="1" Command="{Binding BackCommand}" Content="Back"/>
         <Button Grid.Column="1" Grid.Row="1" Command="{Binding NextCommand}" Content="Next"/>
